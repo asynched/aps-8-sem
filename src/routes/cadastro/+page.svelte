@@ -2,6 +2,10 @@
   import Input from '@/components/Input.svelte'
 </script>
 
+<svelte:head>
+  <title>Collect-it | Cadastro</title>
+</svelte:head>
+
 <div class="w-full h-screen grid place-items-center">
   <div class="flex flex-col items-center">
     <h1 class="mb-2 text-4xl font-bold tracking-tighter text-green-600">

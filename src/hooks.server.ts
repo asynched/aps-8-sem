@@ -1,6 +1,6 @@
 import type { User } from '@prisma/client'
 import { redirect, type Handle } from '@sveltejs/kit'
-import { db } from './db/client'
+import { db } from '@/db/client'
 
 export const handle: Handle = async ({ event, resolve }) => {
   const isPrivate = event.request.url.includes('/app')

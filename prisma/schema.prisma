@@ -17,9 +17,10 @@ model User {
   email    String @unique()
   password String
 
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @default(now()) @updatedAt() @map("updated_at")
-  Session   Session[]
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @default(now()) @updatedAt() @map("updated_at")
+  Session         Session[]
+  CollectionPoint CollectionPoint[]
 
   @@map("users")
 }
@@ -35,4 +36,21 @@ model Session {
   updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
 
   @@map("sessions")
+}
+
+model CollectionPoint {
+  id       Int     @id() @default(autoincrement())
+  name     String
+  address  String
+  city     String
+  state    String
+  verified Boolean @default(false)
+
+  userId Int  @map("user_id")
+  user   User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
+
+  @@map("collection_points")
 }
