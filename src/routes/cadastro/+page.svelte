@@ -1,5 +1,6 @@
 <script lang="ts">
-  import Input from '@/components/Input.svelte'
+  import ImageInput from '@/components/forms/ImageInput.svelte'
+  import Input from '@/components/forms/Input.svelte'
 </script>
 
 <svelte:head>
@@ -14,7 +15,12 @@
     <p class="leading-tight text-center mb-4">
       Preencha o formulário<br />para se cadastrar
     </p>
-    <form method="POST" action="?/register" class="mb-4 grid gap-4">
+    <form
+      method="POST"
+      enctype="multipart/form-data"
+      action="?/register"
+      class="mb-4 grid gap-4"
+    >
       <Input
         name="name"
         label="Nome"
@@ -39,6 +45,7 @@
         label="Senha"
         placeholder="Digite sua senha"
       />
+      <ImageInput label="Foto de perfil" name="avatar" />
       <button class="py-2 px-4 rounded bg-green-600 text-white">
         Cadastrar
       </button>

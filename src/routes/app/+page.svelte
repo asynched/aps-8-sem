@@ -8,62 +8,57 @@
   <title>Collect-it | App</title>
 </svelte:head>
 
-<main class="py-4 px-4">
-  <h1 class="text-4xl font-bold tracking-tighter text-green-600">
-    Pontos de coleta
-  </h1>
-  <p>Veja os pontos de coleta próximos de você.</p>
-</main>
+<h1 class="text-4xl font-bold tracking-tighter text-green-600">
+  Pontos de coleta
+</h1>
 
-<nav
-  class="fixed bottom-0 left-0 py-4 border-t w-full bg-white grid grid-cols-3 place-items-center"
->
-  <a href="/app">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width="1.5"
-      stroke="currentColor"
-      class="w-6 h-6"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+<p class="mb-4">Veja os pontos de coleta próximos de você.</p>
+
+<div class="mb-4 flex gap-2 items-center">
+  <img
+    src={data.user.avatarUrl}
+    alt={data.user.username}
+    class="w-12 h-12 rounded-full object-cover"
+  />
+  <div>
+    <h2 class="leading-none text-lg font-bold tracking-tighter">
+      @{data.user.username}
+    </h2>
+    <p>{data.user.name}</p>
+  </div>
+</div>
+
+<ul>
+  {#each data.points as point (point.id)}
+    <li class="p-4 border rounded">
+      <img
+        src={point.images[0].imageUrl}
+        alt={point.name}
+        class="mb-4 h-48 w-full object-cover rounded"
       />
-    </svg>
-  </a>
-  <a href="/app/criar">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width="1.5"
-      stroke="currentColor"
-      class="w-6 h-6"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M12 4.5v15m7.5-7.5h-15"
-      />
-    </svg>
-  </a>
-  <a href="/app/perfil">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width="1.5"
-      stroke="currentColor"
-      class="w-6 h-6"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-      />
-    </svg>
-  </a>
-</nav>
+      <div class="mb-2 flex gap-1 items-center">
+        <a
+          href={`/app/pontos/${point.id}`}
+          class="text-2xl font-bold tracking-tighter">{point.name}</a
+        >
+        {#if !point.verified}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="w-6 h-6 text-blue-600"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.497 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        {/if}
+      </div>
+      <p>{point.address}.</p>
+      <p>{point.city} - {point.state}.</p>
+      <p>Criado por @{point.user.username}</p>
+    </li>
+  {/each}
+</ul>

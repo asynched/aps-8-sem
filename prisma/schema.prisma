@@ -11,16 +11,19 @@ datasource db {
 }
 
 model User {
-  id       Int    @id() @default(autoincrement())
-  name     String
-  username String @unique()
-  email    String @unique()
-  password String
+  id        Int     @id() @default(autoincrement())
+  name      String
+  username  String  @unique()
+  email     String  @unique()
+  password  String
+  avatarUrl String? @map("avatar_url")
 
-  createdAt       DateTime          @default(now()) @map("created_at")
-  updatedAt       DateTime          @default(now()) @updatedAt() @map("updated_at")
-  Session         Session[]
-  CollectionPoint CollectionPoint[]
+  sessions Session[]
+  points   Point[]
+  ratings  PointRating[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
 
   @@map("users")
 }
@@ -30,7 +33,7 @@ model Session {
   token String @unique()
 
   userId Int  @map("user_id")
-  user   User @relation(fields: [userId], references: [id])
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
@@ -38,7 +41,7 @@ model Session {
   @@map("sessions")
 }
 
-model CollectionPoint {
+model Point {
   id       Int     @id() @default(autoincrement())
   name     String
   address  String
@@ -46,11 +49,44 @@ model CollectionPoint {
   state    String
   verified Boolean @default(false)
 
-  userId Int  @map("user_id")
-  user   User @relation(fields: [userId], references: [id])
+  userId  Int           @map("user_id")
+  user    User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  images  PointImage[]
+  ratings PointRating[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
 
-  @@map("collection_points")
+  @@map("points")
+}
+
+model PointImage {
+  id  Int    @id() @default(autoincrement())
+  url String
+
+  pointId Int   @map("point_id")
+  point   Point @relation(fields: [pointId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
+
+  @@map("point_images")
+}
+
+model PointRating {
+  id      Int    @id() @default(autoincrement())
+  rating  Float
+  comment String
+
+  userId Int  @map("user_id")
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  pointId Int   @map("point_id")
+  point   Point @relation(fields: [pointId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
+
+  @@unique([pointId, userId])
+  @@map("point_ratings")
 }
