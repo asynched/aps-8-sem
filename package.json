@@ -27,6 +27,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@vercel/blob": "^0.14.1",
 		"bcryptjs": "^2.4.3",
 		"zod": "^3.22.4"
 	}

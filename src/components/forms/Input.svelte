@@ -5,6 +5,7 @@
   export let placeholder: string
   export let value: string | undefined = undefined
   export let required = true
+  export let error: string | undefined = undefined
 </script>
 
 <div class="flex flex-col gap-1">
@@ -18,4 +19,7 @@
     id={name}
     class="py-2 px-4 border rounded outline-none"
   />
+  {#if error}
+    <span class="text-sm text-red-600">{error}</span>
+  {/if}
 </div>

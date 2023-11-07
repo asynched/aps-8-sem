@@ -1,6 +1,13 @@
 <script lang="ts">
+  import { enhance } from '$app/forms'
   import ImageInput from '@/components/forms/ImageInput.svelte'
   import Input from '@/components/forms/Input.svelte'
+  import type { ActionData } from './$types'
+
+  export let form: ActionData
+
+  $: fieldErrors = typeof form?.error === 'object' ? form.error : undefined
+  $: actionError = typeof form?.error === 'string' ? form.error : undefined
 </script>
 
 <svelte:head>
@@ -20,35 +27,43 @@
       enctype="multipart/form-data"
       action="?/register"
       class="mb-4 grid gap-4"
+      use:enhance
     >
       <Input
         name="name"
         label="Nome"
         type="text"
         placeholder="Digite seu nome completo"
+        error={fieldErrors?.name?.join(' | ')}
       />
       <Input
         name="username"
         label="Usuário"
         type="text"
         placeholder="Digite seu nome de usuário"
+        error={fieldErrors?.username?.join(' | ')}
       />
       <Input
         name="email"
         label="E-mail"
         type="email"
         placeholder="Digite seu e-mail"
+        error={fieldErrors?.email?.join(' | ')}
       />
       <Input
         type="password"
         name="password"
         label="Senha"
         placeholder="Digite sua senha"
+        error={fieldErrors?.password?.join(' | ')}
       />
       <ImageInput label="Foto de perfil" name="avatar" />
       <button class="py-2 px-4 rounded bg-green-600 text-white">
         Cadastrar
       </button>
+      {#if actionError}
+        <span class="text-sm text-red-600 text-center">{actionError}</span>
+      {/if}
     </form>
     <p>
       Já tem uma conta?

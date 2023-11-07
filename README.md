@@ -1,38 +1,47 @@
-# create-svelte
+# aps-8-sem
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Atividades práticas supervisionadas do 8º semestre do curso de Ciência da Computação da Universidade Paulista (UNIP).
 
-## Creating a project
+## Sobre o projeto
 
-If you're seeing this, you've probably already done this step. Congrats!
+O projeto é uma aplicação distribuída para dispositivos móveis que possibilita cadastrar pontos de coleta de lixo reciclável, compartilhando isso com todos os usuários conectados na plataforma, para que assim, possam contribuir com o meio ambiente. Também é possível cadastrar avaliações de cada ponto de coleta.
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## Tecnologias utilizadas
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+- Svelte
+- Prisma
+- NodeJS
+- Vercel Storage
 
-## Developing
+## Como executar o projeto
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+### Requisitos
 
-```bash
-npm run dev
+- NodeJS
+- pnpm
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
+### Instalação
 
 ```bash
-npm run build
+pnpm i
 ```
 
-You can preview the production build with `npm run preview`.
+### Criação do banco de dados
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+```bash
+pnpm prisma db push
+```
+
+### Execução
+
+```bash
+pnpm dev
+```
+
+## Autores
+
+- [Eder Lima](https://github.com/asynched)
+- [Gustavo Marinho](https://github.com/marinhogustavo)
+- [Jeferson Santos](https://github.com/Worshx)
+- [Matheus Farali](https://github.com/matheusfarali)
+- [Marcus Ribeiro](https://github.com/marcusribeir0)

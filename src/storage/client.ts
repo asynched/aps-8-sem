@@ -1,5 +1,6 @@
 import { writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
+import { put } from '@vercel/blob'
 
 type Bytes = Buffer | Uint8Array | ArrayBuffer
 
@@ -11,6 +12,24 @@ type FilePath = {
 
 export interface Storage {
   save(path: string, filename: string, data: Bytes): Promise<FilePath>
+}
+
+export class VercelStorage implements Storage {
+  async save(path: string, filename: string, data: Bytes): Promise<FilePath> {
+    try {
+      const { url } = await put(`${path}/${filename}`, data, {
+        access: 'public',
+      })
+
+      return {
+        url,
+        absolute: url,
+        relative: url,
+      }
+    } catch (err) {
+      throw err
+    }
+  }
 }
 
 export class NodeStorage implements Storage {
@@ -32,4 +51,4 @@ export class NodeStorage implements Storage {
   }
 }
 
-export const storage = new NodeStorage()
+export const storage: Storage = new VercelStorage()

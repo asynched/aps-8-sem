@@ -29,7 +29,15 @@ export const actions: Actions = {
   async login({ request, cookies }) {
     const body = Object.fromEntries(await request.formData())
 
-    const data = login.parse(body)
+    const result = login.safeParse(body)
+
+    if (!result.success) {
+      return fail(400, {
+        error: result.error.flatten().fieldErrors,
+      })
+    }
+
+    const data = result.data
 
     const user = await db.user.findUnique({
       where: {

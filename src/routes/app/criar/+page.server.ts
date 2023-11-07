@@ -1,14 +1,67 @@
-import { object, string, instanceof as instanceOf, array } from 'zod'
+import {
+  object,
+  string,
+  instanceof as instanceOf,
+  array,
+  union,
+  literal,
+} from 'zod'
 import type { Actions } from './$types'
 import { fail, redirect } from '@sveltejs/kit'
 import { db } from '@/db/client'
 import { storage } from '@/storage/client'
 
+const STATES = [
+  { name: 'Acre', value: 'AC' },
+  { name: 'Alagoas', value: 'AL' },
+  { name: 'Amapá', value: 'AP' },
+  { name: 'Amazonas', value: 'AM' },
+  { name: 'Bahia', value: 'BA' },
+  { name: 'Ceará', value: 'CE' },
+  { name: 'Distrito Federal', value: 'DF' },
+  { name: 'Espírito Santo', value: 'ES' },
+  { name: 'Goiás', value: 'GO' },
+  { name: 'Maranhão', value: 'MA' },
+  { name: 'Mato Grosso', value: 'MT' },
+  { name: 'Mato Grosso do Sul', value: 'MS' },
+  { name: 'Minas Gerais', value: 'MG' },
+  { name: 'Pará', value: 'PA' },
+  { name: 'Paraíba', value: 'PB' },
+  { name: 'Paraná', value: 'PR' },
+  { name: 'Pernambuco', value: 'PE' },
+  { name: 'Piauí', value: 'PI' },
+  { name: 'Rio de Janeiro', value: 'RJ' },
+  { name: 'Rio Grande do Norte', value: 'RN' },
+  { name: 'Rio Grande do Sul', value: 'RS' },
+  { name: 'Rondônia', value: 'RO' },
+  { name: 'Roraima', value: 'RR' },
+  { name: 'Santa Catarina', value: 'SC' },
+  { name: 'São Paulo', value: 'SP' },
+  { name: 'Sergipe', value: 'SE' },
+  { name: 'Tocantins', value: 'TO' },
+] as const
+
 const create = object({
-  name: string().min(2).max(255),
-  address: string().min(2).max(255),
-  city: string().min(2).max(255),
-  state: string().min(2).max(255),
+  name: string()
+    .min(2, { message: 'Nome deve ter pelo menos 2 caracteres' })
+    .max(255, {
+      message: 'Nome deve ter no máximo 255 caracteres',
+    }),
+  address: string()
+    .min(2, {
+      message: 'Endereço deve ter pelo menos 2 caracteres',
+    })
+    .max(255, {
+      message: 'Endereço deve ter no máximo 255 caracteres',
+    }),
+  city: string()
+    .min(2, {
+      message: 'Cidade deve ter pelo menos 2 caracteres',
+    })
+    .max(255, {
+      message: 'Cidade deve ter no máximo 255 caracteres',
+    }),
+  state: string().max(32),
 })
 
 const images = array(instanceOf(File)).min(1)
@@ -28,7 +81,7 @@ export const actions: Actions = {
 
     if (!formResult.success) {
       return fail(400, {
-        errors: formResult.error.flatten().fieldErrors,
+        error: formResult.error.flatten().fieldErrors,
       })
     }
 
@@ -43,7 +96,7 @@ export const actions: Actions = {
 
     if (!filesResult.success) {
       return fail(400, {
-        errors: filesResult.error.flatten().fieldErrors,
+        error: filesResult.error.flatten().fieldErrors,
       })
     }
 
