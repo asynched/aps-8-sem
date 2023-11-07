@@ -1,29 +1,39 @@
 <script lang="ts">
   import type { PageData } from './$types'
+  import CreateRatingModal from '@/components/modals/CreateRatingModal.svelte'
 
   export let data: PageData
 
   const { point } = data
 
-  let active = 0
+  let modal = false
+  let activeImage = 0
+
+  const toggleModal = () => {
+    modal = !modal
+  }
 </script>
 
+<svelte:head>
+  <title>Collect-it | {point.name}</title>
+</svelte:head>
+
 <img
-  src={point.images[active].url}
+  src={point.images[activeImage].url}
   alt={point.name}
-  class="h-72 object-cover rounded mb-4"
+  class="h-72 w-full object-cover rounded mb-4"
 />
 
 <div class="mb-4 grid grid-cols-3 gap-4">
   {#each point.images as image, index (image.id)}
     <button
       on:click={() => {
-        active = index
+        activeImage = index
       }}
     >
       <img
         class="h-full object-cover rounded"
-        class:brightness-50={active !== index}
+        class:brightness-50={activeImage !== index}
         src={image.url}
         alt={point.name}
       />
@@ -35,7 +45,7 @@
   <h1 class="text-4xl font-bold tracking-tighter">
     {point.name}
   </h1>
-  {#if !point.verified}
+  {#if point.verified}
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
@@ -51,4 +61,64 @@
   {/if}
 </div>
 <p>{point.address}.</p>
-<p>{point.city} - {point.state}.</p>
+<p class="mb-4">{point.city} - {point.state}.</p>
+
+<button
+  on:click={toggleModal}
+  class="mb-4 py-2 w-full text-white bg-green-600 rounded">Avaliar</button
+>
+
+<h2 class="mb-4 text-2xl font-bold tracking-tighter">Avaliações</h2>
+
+{#if point.ratings.length > 0}
+  <ul>
+    {#each point.ratings as rating (rating.id)}
+      <li class="p-4 border rounded">
+        <div class="mb-2 flex gap-2 items-center">
+          <img
+            src={rating.user.avatarUrl}
+            alt={rating.user.username}
+            class="w-10 h-10 rounded-full"
+          />
+          <div>
+            <p class="text-sm leading-none text-gray-600">
+              @{rating.user.username}
+            </p>
+            <p>{rating.user.name}</p>
+          </div>
+        </div>
+        <p>{rating.comment}</p>
+        <div class="flex mb-2">
+          {#each Array(5).fill(null) as _, index (index)}
+            {@const stars = rating.rating}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="w-4 h-4"
+              class:text-gray-300={index >= stars}
+              class:text-yellow-500={index < stars}
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          {/each}
+        </div>
+        <p class="text-sm text-gray-600">
+          {point.createdAt.toLocaleDateString()}
+        </p>
+      </li>
+    {/each}
+  </ul>
+{:else}
+  <div class="p-4 bor">
+    <p class="text-gray-600">Nenhuma avaliação encontrada.</p>
+  </div>
+{/if}
+
+{#if modal}
+  <CreateRatingModal on:close={toggleModal} />
+{/if}

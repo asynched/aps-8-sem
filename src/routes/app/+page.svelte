@@ -28,11 +28,11 @@
   </div>
 </div>
 
-<ul>
+<ul class="grid gap-4">
   {#each data.points as point (point.id)}
     <li class="p-4 border rounded">
       <img
-        src={point.images[0].imageUrl}
+        src={point.images[0].url}
         alt={point.name}
         class="mb-4 h-48 w-full object-cover rounded"
       />

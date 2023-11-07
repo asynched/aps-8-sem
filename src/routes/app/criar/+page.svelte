@@ -21,6 +21,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>Collect-it | Criar ponto</title>
+</svelte:head>
+
 <h1 class="mb-2 text-4xl font-bold tracking-tighter text-green-600">
   Criar ponto
 </h1>

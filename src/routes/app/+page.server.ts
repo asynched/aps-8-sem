@@ -18,7 +18,7 @@ export const load: PageServerLoad = async ({ locals }) => {
       images: {
         select: {
           id: true,
-          imageUrl: true,
+          url: true,
         },
       },
     },
