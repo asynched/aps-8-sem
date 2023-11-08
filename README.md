@@ -6,6 +6,12 @@ Atividades práticas supervisionadas do 8º semestre do curso de Ciência da Com
 
 O projeto é uma aplicação distribuída para dispositivos móveis que possibilita cadastrar pontos de coleta de lixo reciclável, compartilhando isso com todos os usuários conectados na plataforma, para que assim, possam contribuir com o meio ambiente. Também é possível cadastrar avaliações de cada ponto de coleta.
 
+## Prévias
+
+| Login                            | Home                           | Ponto de coleta                            |
+| -------------------------------- | ------------------------------ | ------------------------------------------ |
+| ![Login](docs/images/login.jpeg) | ![Home](docs/images/home.jpeg) | ![Ponto de coleta](docs/images/point.jpeg) |
+
 ## Tecnologias utilizadas
 
 - Svelte
