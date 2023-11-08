@@ -1,7 +1,7 @@
 import { redirect, fail } from '@sveltejs/kit'
 import { object, string, instanceof as instanceOf } from 'zod'
 import type { Actions } from './$types'
-import { hash, genSalt } from 'bcryptjs'
+import bcrypt from 'bcryptjs'
 
 import { db } from '@/db/client'
 import { avatar } from '@/avatar/client'
@@ -43,7 +43,7 @@ export const actions: Actions = {
     try {
       const data = result.data
 
-      data.password = await hash(data.password, await genSalt())
+      data.password = await bcrypt.hash(data.password, await bcrypt.genSalt())
 
       const user = await db.user.create({
         data: {

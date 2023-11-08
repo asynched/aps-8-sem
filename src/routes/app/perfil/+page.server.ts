@@ -1,4 +1,4 @@
-import { hash, genSalt } from 'bcryptjs'
+import bcrypt from 'bcryptjs'
 import { object, string } from 'zod'
 import type { Actions, PageServerLoad } from './$types'
 import { fail, redirect } from '@sveltejs/kit'
@@ -60,7 +60,7 @@ export const actions: Actions = {
     const data = result.data
 
     if (data.password) {
-      data.password = await hash(data.password, await genSalt())
+      data.password = await bcrypt.hash(data.password, await bcrypt.genSalt())
     }
 
     await db.user.update({

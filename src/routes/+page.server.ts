@@ -2,7 +2,7 @@ import { object, string } from 'zod'
 import type { Actions } from './$types'
 import { db } from '@/db/client'
 import { fail, redirect } from '@sveltejs/kit'
-import { compare } from 'bcryptjs'
+import bcrypt from 'bcryptjs'
 import crypto from 'node:crypto'
 import type { User } from '@prisma/client'
 
@@ -51,7 +51,7 @@ export const actions: Actions = {
       })
     }
 
-    const isPasswordValid = await compare(data.password, user.password)
+    const isPasswordValid = await bcrypt.compare(data.password, user.password)
 
     if (!isPasswordValid) {
       return fail(400, {
