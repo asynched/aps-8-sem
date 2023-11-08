@@ -32,7 +32,7 @@
       }}
     >
       <img
-        class="h-full object-cover rounded"
+        class="w-full h-36 object-cover rounded"
         class:brightness-50={activeImage !== index}
         src={image.url}
         alt={point.name}
