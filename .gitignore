@@ -14,4 +14,5 @@ static/points/*
 !static/avatars/.gitkeep
 !static/points/.gitkeep
 
+mysql/
 *.db

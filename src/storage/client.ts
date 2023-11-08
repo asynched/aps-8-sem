@@ -1,6 +1,7 @@
 import { writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { put } from '@vercel/blob'
+import { env } from '$env/dynamic/private'
 
 type Bytes = Buffer | Uint8Array | ArrayBuffer
 
@@ -51,4 +52,8 @@ export class NodeStorage implements Storage {
   }
 }
 
-export const storage: Storage = new VercelStorage()
+export let storage: Storage = new VercelStorage()
+
+if (env.NODE_ENV === 'development') {
+  storage = new NodeStorage()
+}
